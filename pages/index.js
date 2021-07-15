@@ -29,6 +29,28 @@ function ProfileSidebar(props) {
   )
 }
 
+function ProfileRelationsBox(props) {
+  return (
+    <ProfileRelationsBoxWrapper>
+      <h2 className="smallTitle">
+        {props.title} ({props.items.length})
+      </h2>
+      <ul>
+        {props.items.map((c) => {
+          return (
+            <li key={c.id}>
+              <a href={`/users/${c.title}`} key={c.id}>
+                <img src={c.image} />
+                <span>{c.title}</span>
+              </a>
+            </li>
+          )
+        })}
+      </ul>
+    </ProfileRelationsBoxWrapper>
+  )
+}
+
 export default function Home() {
   const [comunidades, setComunidades] = React.useState([
     {
@@ -46,6 +68,18 @@ export default function Home() {
     'rafaballerini',
     'marcobrunodev',
   ]
+
+  const [seguidores, setSeguidores] = React.useState([])
+
+  React.useEffect(() => {
+    fetch('https://api.github.com/users/rcintra/followers')
+      .then((r) => {
+        return r.json()
+      })
+      .then((c) => {
+        setSeguidores(c)
+      })
+  }, [])
 
   return (
     <>
@@ -103,7 +137,8 @@ export default function Home() {
           className="profileRelationsArea"
           style={{ gridArea: 'profileRelationsArea' }}
         >
-          <Box>Favoritos</Box>
+          <ProfileRelationsBox title="Seguidores" items={seguidores} />
+
           <ProfileRelationsBoxWrapper>
             <h2 className="smallTitle">Meus amigos ({comunidades.length})</h2>
             <ul>
