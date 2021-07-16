@@ -52,6 +52,8 @@ function ProfileRelationsBox(props) {
 }
 
 export default function Home() {
+  console.log(process.env.TOKEN_DATO_CMS_READ)
+
   const [comunidades, setComunidades] = React.useState([])
   const usuarioLogado = 'rcintra'
   const pessoasFavoritas = [
@@ -78,7 +80,7 @@ export default function Home() {
     fetch('https://graphql.datocms.com', {
       method: 'POST',
       headers: {
-        Authorization: 'bbe4a44136a97da9e1248c6f7241d0',
+        Authorization: process.env.NEXT_PUBLIC_TOKEN_DATO_CMS_READ,
         'Content-Type': 'application/json',
         Accept: 'application/json',
       },
