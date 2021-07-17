@@ -7,6 +7,8 @@ import {
 } from '../src/lib/AluraCommons'
 import { ProfileRelationsBoxWrapper } from '../src/components/ProfileRelations'
 import React from 'react'
+import nookies from 'nookies'
+import jwt from 'jsonwebtoken'
 
 function ProfileSidebar(props) {
   return (
@@ -51,11 +53,9 @@ function ProfileRelationsBox(props) {
   )
 }
 
-export default function Home() {
-  console.log(process.env.TOKEN_DATO_CMS_READ)
-
+export default function Home(props) {
   const [comunidades, setComunidades] = React.useState([])
-  const usuarioLogado = 'rcintra'
+  const usuarioLogado = props.githubUser
   const pessoasFavoritas = [
     'juunegreiros',
     'peas',
@@ -206,4 +206,39 @@ export default function Home() {
       </MainGrid>
     </>
   )
+}
+
+export async function getServerSideProps(ctx) {
+  const cookies = nookies.get(ctx)
+  const token = cookies.USER_TOKEN
+
+  console.log(token)
+
+  const { isAuthenticated } = await fetch(
+    'https://alurakut.vercel.app/api/auth',
+    {
+      headers: {
+        Authorization: token,
+      },
+    }
+  ).then((s) => s.json())
+
+  console.log(isAuthenticated)
+
+  if (!isAuthenticated) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    }
+  }
+
+  const { githubUser } = jwt.decode(token)
+
+  return {
+    props: {
+      githubUser,
+    },
+  }
 }

@@ -38,13 +38,12 @@ export default function LoginScreen() {
             className="box"
             onSubmit={(e) => {
               e.preventDefault()
-              console.log('Usuario: ', githubUser)
               fetch('https://alurakut.vercel.app/api/login', {
                 method: 'POST',
                 headers: {
-                  'Contenty-Type': 'application/json',
+                  'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ githubUser: 'rcintra' }),
+                body: JSON.stringify({ githubUser: githubUser }),
               }).then(async (r) => {
                 const dadosDaResposta = await r.json()
                 const token = dadosDaResposta.token
