@@ -212,8 +212,6 @@ export async function getServerSideProps(ctx) {
   const cookies = nookies.get(ctx)
   const token = cookies.USER_TOKEN
 
-  console.log(token)
-
   const { isAuthenticated } = await fetch(
     'https://alurakut.vercel.app/api/auth',
     {
@@ -222,8 +220,6 @@ export async function getServerSideProps(ctx) {
       },
     }
   ).then((s) => s.json())
-
-  console.log(isAuthenticated)
 
   if (!isAuthenticated) {
     return {

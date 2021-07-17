@@ -66,7 +66,9 @@ export default function LoginScreen() {
               }}
             />
             {githubUser.length === 0 ? 'Preencha o campo' : ''}
-            <button type="submit">Login</button>
+            <button type="submit" disabled={!githubUser ? true : false}>
+              Login
+            </button>
           </form>
 
           <footer className="box">
